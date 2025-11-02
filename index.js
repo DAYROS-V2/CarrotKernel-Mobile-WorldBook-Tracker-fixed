@@ -415,7 +415,8 @@ function detectSheetCommand(messageText) {
         { command: '!tagsheet', type: 'tagsheet' },
         { command: '!quicksheet', type: 'quicksheet' },
         { command: '!memsheet', type: 'memsheet' },
-        { command: '!updatesheet', type: 'updatesheet' }
+        { command: '!updatesheet', type: 'updatesheet' },
+        { command: '!physheet', type: 'physheet' }
     ];
     
     for (const { command, type } of sheetCommands) {
@@ -458,16 +459,18 @@ async function processSheetCommand(sheetData) {
         'tagsheet': 'TAGSHEET',
         'quicksheet': 'QUICKSHEET',
         'memsheet': 'MEMSHEET',
-        'updatesheet': 'UPDATESHEET'
+        'updatesheet': 'UPDATESHEET',
+        'physheet': 'PHYSSHEET'
     };
-    
+
     // Get the appropriate injection template
     const templateCategoryMap = {
         'fullsheet': 'BunnyMo Fullsheet Injection',
         'tagsheet': 'BunnyMo Tagsheet Injection',
         'quicksheet': 'BunnyMo Quicksheet Injection',
         'memsheet': 'BunnyMo Memsheet Injection',
-        'updatesheet': 'BunnyMo Updatesheet Injection'
+        'updatesheet': 'BunnyMo Updatesheet Injection',
+        'physheet': 'BunnyMo Physsheet Injection'
     };
     
     const injectionTemplate = CarrotTemplateManager.getPrimaryTemplateForCategory(templateCategoryMap[type]);
@@ -1105,16 +1108,9 @@ export async function unwrapLorebookEntries(lorebookName) {
 }
 
 // Scan selected lorebooks for character data
-// CONTEXT-AWARE: Only scans for the current character's data to prevent cross-contamination
-async function scanSelectedLorebooks(lorebookNames, targetCharacterName = null) {
-    // Get current character context if not explicitly provided
-    if (!targetCharacterName) {
-        const context = CarrotContext?.getCurrentContext();
-        if (context?.characterId && context.characters?.[context.characterId]) {
-            targetCharacterName = context.characters[context.characterId].name;
-        }
-    }
-
+// Loads ALL characters from connected Character Repos
+// Context is handled by Lorebook Connector (which lorebooks are connected to which characters)
+async function scanSelectedLorebooks(lorebookNames) {
     // Clear scanned characters to prevent stale data
     scannedCharacters.clear();
 
@@ -1122,10 +1118,9 @@ async function scanSelectedLorebooks(lorebookNames, targetCharacterName = null) 
     let characterReposScanned = 0;
     let tagLibrariesScanned = 0;
 
-    CarrotDebug.scan(`Starting context-aware scan of ${lorebookNames.length} lorebooks`, {
+    CarrotDebug.scan(`Scanning ${lorebookNames.length} lorebooks`, {
         lorebooks: lorebookNames,
-        characterRepos: Array.from(characterRepoBooks),
-        targetCharacter: targetCharacterName || 'ALL (no context filtering)'
+        characterRepos: Array.from(characterRepoBooks)
     });
     CarrotDebug.startTimer('lorebook-scan', 'SCAN');
 
@@ -1166,20 +1161,13 @@ async function scanSelectedLorebooks(lorebookNames, targetCharacterName = null) 
                         return;
                     }
 
-                    // CONTEXT FILTERING: Only load character if it matches target or no target specified
-                    const shouldLoad = !targetCharacterName ||
-                                     char.name === targetCharacterName ||
-                                     char.name.toLowerCase() === targetCharacterName.toLowerCase();
-
-                    if (shouldLoad) {
-                        if (!scannedCharacters.has(char.name)) {
-                            scannedCharacters.set(char.name, char);
-                            foundCharacters.push(char.name);
-                            foundCharactersInThisBook = true;
-                            CarrotDebug.repo(`✅ Loaded character: ${char.name} from ${lorebookName}`);
-                        }
+                    // Load ALL characters from Character Repos - no context filtering
+                    if (!scannedCharacters.has(char.name)) {
+                        scannedCharacters.set(char.name, char);
+                        foundCharacters.push(char.name);
+                        foundCharactersInThisBook = true;
+                        CarrotDebug.repo(`✅ Loaded character: ${char.name} from ${lorebookName}`);
                     }
-                    // No logging for skipped characters - too spammy
                 });
             });
 
@@ -1201,8 +1189,7 @@ async function scanSelectedLorebooks(lorebookNames, targetCharacterName = null) 
     }
 
     CarrotDebug.endTimer('lorebook-scan', 'SCAN');
-    CarrotDebug.scan('Context-aware scan completed successfully', {
-        targetCharacter: targetCharacterName || 'ALL',
+    CarrotDebug.scan('Scan completed successfully', {
         charactersFound: foundCharacters.length,
         characterReposScanned: characterReposScanned,
         tagLibrariesScanned: tagLibrariesScanned,
@@ -4963,7 +4950,7 @@ async function manualScan() {
     try {
         const results = await scanSelectedLorebooks(selected);
         updateStatusPanels();
-        
+
         // Update the popup content in place instead of closing/reopening
         updateRepositoryManagerContent();
         
@@ -6513,7 +6500,7 @@ window.CarrotKernel = {
     closeLorebookConnector: () => CarrotLorebookConnector.close(),
 
     // Lorebook Scanning (exposed for pack manager)
-    scanSelectedLorebooks: (lorebookNames, targetCharacterName) => scanSelectedLorebooks(lorebookNames, targetCharacterName),
+    scanSelectedLorebooks: (lorebookNames) => scanSelectedLorebooks(lorebookNames),
 
     // Utilities
     parseBunnymoTags: (text) => parseBunnymoTags(text),
@@ -6820,7 +6807,8 @@ function registerEventListeners() {
                 { command: '!quicksheet', type: 'quicksheet' },
                 { command: '!fullsheet', type: 'fullsheet' },
                 { command: '!tagsheet', type: 'tagsheet' },
-                { command: '!memsheet', type: 'memsheet' }
+                { command: '!memsheet', type: 'memsheet' },
+                { command: '!physheet', type: 'physheet' }
             ];
 
             for (const { command, type } of commandPatterns) {
@@ -9275,10 +9263,10 @@ function bindSettingsEvents() {
         }
         
         $(this).text('Scanning...').prop('disabled', true);
-        
+
         try {
             const results = await scanSelectedLorebooks(selected);
-            
+
             let message = `Scan Results:\n\n`;
             message += `• Characters Found: ${results.characters.length}\n`;
             message += `• Character Repos: ${results.characterRepos}\n`;

@@ -122,6 +122,9 @@ export class CarrotTemplatePromptEditInterface {
                     <option value="BunnyMo Fullsheet Injection">🚨 BunnyMo Fullsheet Injection</option>
                     <option value="BunnyMo Tagsheet Injection">🚨 BunnyMo Tagsheet Injection</option>
                     <option value="BunnyMo Quicksheet Injection">🚨 BunnyMo Quicksheet Injection</option>
+                    <option value="BunnyMo Memsheet Injection">🚨 BunnyMo Memsheet Injection</option>
+                    <option value="BunnyMo Updatesheet Injection">🚨 BunnyMo Updatesheet Injection</option>
+                    <option value="BunnyMo Physsheet Injection">🚨 BunnyMo Physsheet Injection</option>
                 </select>
             </div>
             
@@ -1249,7 +1252,19 @@ Most common categories:<br/>
         if (name.includes('quicksheet injection') || name.includes('quick sheet injection')) {
             return 'BunnyMo Quicksheet Injection';
         }
-        
+
+        if (name.includes('memsheet injection') || name.includes('mem sheet injection')) {
+            return 'BunnyMo Memsheet Injection';
+        }
+
+        if (name.includes('updatesheet injection') || name.includes('update sheet injection')) {
+            return 'BunnyMo Updatesheet Injection';
+        }
+
+        if (name.includes('physsheet injection') || name.includes('phys sheet injection') || name.includes('physical sheet')) {
+            return 'BunnyMo Physsheet Injection';
+        }
+
         // Default fallback to character injection
         return 'Character Data Injection';
     }

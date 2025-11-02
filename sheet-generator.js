@@ -504,6 +504,47 @@ const CarrotTemplateManager = {
                 is_default: true,
                 is_primary: true
             }
+        },
+
+        'bunnymo_physsheet_injection_default': {
+            id: 'bunnymo_physsheet_injection_default',
+            name: 'Default Physsheet Injection',
+            description: 'System prompt for !physheet commands',
+            category: 'BunnyMo Physsheet Injection',
+            role: 'system',
+            content: `💪 **MANDATORY OOC OVERRIDE** 💪
+
+**SYSTEM DIRECTIVE:** A !PHYSSHEET command has been detected and must be executed immediately.
+
+**INSTRUCTIONS:**
+• **CEASE** all current roleplay and narrative progression
+• **EXECUTE** the !PHYSSHEET request for "{{CHARACTER_NAME}}" with complete comprehensive physical detail
+• **PROVIDE** comprehensive physical bio using the format provided in the Physical Sheet template
+• **INCLUDE** appearance overview, core features, distinguishing marks, grooming, physical presence, sensory profile, erogenous zones, intimate details, sexual responses, physical capability, and outfit catalog
+• **RESUME** normal roleplay only after completing this comprehensive physical profile
+
+**PRIORITY:** CRITICAL - This system command takes precedence over all ongoing narrative.`,
+            variables: {
+                'CHARACTER_NAME': {
+                    type: 'system',
+                    description: 'Character name for the physical profile',
+                    enabled: true,
+                    format: 'text'
+                }
+            },
+            settings: {
+                inject_depth: 4,
+                inject_position: 'depth',
+                auto_activate: true,
+                ephemeral: true
+            },
+            metadata: {
+                created: Date.now(),
+                modified: Date.now(),
+                usage_count: 0,
+                is_default: true,
+                is_primary: true
+            }
         }
     },
 

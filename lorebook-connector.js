@@ -87,8 +87,12 @@ export class CarrotLorebookConnector {
             });
         }
 
-        // Chat-scoped books from chat_metadata.carrot_chat_books
-        const chatBooks = chat_metadata.carrot_chat_books || [];
+        // Chat-scoped books from chat_metadata.carrot_chat_books and native world_info
+        const chatBooks = new Set(chat_metadata.carrot_chat_books || []);
+        if (chat_metadata.world_info) {
+            chatBooks.add(chat_metadata.world_info);
+        }
+        
         chatBooks.forEach(bookName => {
             connections.push({
                 name: bookName,
@@ -327,7 +331,11 @@ function loadCurrentConnections() {
     }
 
     // Load chat books
-    const chatBooks = chat_metadata.carrot_chat_books || [];
+    const chatBooks = new Set(chat_metadata.carrot_chat_books || []);
+    if (chat_metadata.world_info) {
+        chatBooks.add(chat_metadata.world_info);
+    }
+    
     chatBooks.forEach(bookName => {
         currentConnections[bookName] = { scope: 'chat', isPrimary: false };
     });
@@ -742,6 +750,20 @@ async function applyConnections() {
 
     // 3. Save chat-scoped books to chat_metadata.carrot_chat_books
     chat_metadata.carrot_chat_books = chatScopedBooks;
+    
+    // Sync to native world_info (first one wins)
+    if (chatScopedBooks.length > 0) {
+        chat_metadata.world_info = chatScopedBooks[0];
+        $('.chat_lorebook_button').addClass('world_set');
+        
+        if (chatScopedBooks.length > 1) {
+            toastr.warning('SillyTavern only supports one active lorebook per chat natively. Only "' + chatScopedBooks[0] + '" will be active.');
+        }
+    } else {
+        delete chat_metadata.world_info;
+        $('.chat_lorebook_button').removeClass('world_set');
+    }
+    
     await saveMetadataDebounced();
 
     CarrotDebug.ui('🐰 Connections saved!', {

@@ -610,6 +610,7 @@ const defaultSettings = {
     autoExpand: false,
     sendToAI: true,
     injectionRole: 'system',
+    injectionDepth: 4,
     maxCharactersDisplay: 6,  // Max characters shown in chat
     maxCharactersInject: 6,   // Max characters sent to AI
     debugMode: false,
@@ -7644,6 +7645,15 @@ function bindSettingsEvents() {
         saveSettingsDebounced();
     });
     $('#carrot_max_inject_value').text(settings.maxCharactersInject || 6);
+
+    // Injection Depth (slider)
+    $('#carrot_injection_depth').val(settings.injectionDepth || 4).on('input', async function() {
+        const value = parseInt($(this).val());
+        $('#carrot_injection_depth_value').text(value);
+        extension_settings[extensionName].injectionDepth = value;
+        saveSettingsDebounced();
+    });
+    $('#carrot_injection_depth_value').text(settings.injectionDepth || 4);
 
     // ============================
     // Smart Context (RAG) Settings

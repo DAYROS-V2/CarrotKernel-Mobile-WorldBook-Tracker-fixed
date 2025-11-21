@@ -112,6 +112,14 @@
                             <div class="carrot-slider-hint">Limit characters sent to AI context to save tokens</div>
                             <input type="range" id="carrot_max_characters_inject" class="carrot-slider" min="1" max="20" value="6">
                         </div>
+                        <div class="carrot-setting-item carrot-slider-container">
+                            <div class="carrot-slider-header">
+                                <span class="carrot-slider-icon">⬇️</span>
+                                <span class="carrot-slider-title">Injection Depth: <span id="carrot_injection_depth_value">4</span></span>
+                            </div>
+                            <div class="carrot-slider-hint">How many messages back to inject character data (0 = end of context)</div>
+                            <input type="range" id="carrot_injection_depth" class="carrot-slider" min="0" max="10" value="4">
+                        </div>
                     </div>
                 </div>
             </div>

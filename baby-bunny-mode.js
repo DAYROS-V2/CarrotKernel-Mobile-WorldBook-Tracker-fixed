@@ -23,8 +23,8 @@
 // =============================================================================
 
 import { saveSettingsDebounced, chat, chat_metadata, characters, this_chid } from '../../../../script.js';
-import { extension_settings, getContext } from '../../../extensions.js';
-import { parseRegexFromString, world_info, world_names, loadWorldInfo, createWorldInfoEntry, saveWorldInfo } from '../../../world-info.js';
+import { extension_settings, getContext, saveMetadataDebounced } from '../../../extensions.js';
+import { parseRegexFromString, world_info, world_names, loadWorldInfo, createWorldInfoEntry, saveWorldInfo, updateWorldInfoList, selected_world_info } from '../../../world-info.js';
 import { highlightRegex } from '../../../utils.js';
 import { regenerateChunkKeywords, detectFullsheetInMessage, vectorizeFullsheetFromMessage, chunkFullsheet } from './fullsheet-rag.js';
 import { CarrotDebug } from './debugger.js';

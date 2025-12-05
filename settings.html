@@ -112,6 +112,14 @@
                             <div class="carrot-slider-hint">Limit characters sent to AI context to save tokens</div>
                             <input type="range" id="carrot_max_characters_inject" class="carrot-slider" min="1" max="20" value="6">
                         </div>
+                        <div class="carrot-setting-item carrot-slider-container">
+                            <div class="carrot-slider-header">
+                                <span class="carrot-slider-icon">⬇️</span>
+                                <span class="carrot-slider-title">Injection Depth: <span id="carrot_injection_depth_value">4</span></span>
+                            </div>
+                            <div class="carrot-slider-hint">How many messages back to inject character data (0 = end of context)</div>
+                            <input type="range" id="carrot_injection_depth" class="carrot-slider" min="0" max="10" value="4">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -685,8 +693,8 @@
                         </div>
                         <div class="carrot-status-content">
                             <div class="carrot-status-title">Pack Manager</div>
-                            <div class="carrot-status-value" id="carrot-pack-status">Scanning packs...</div>
-                            <div class="carrot-status-detail" id="carrot-pack-detail">Click to manage BunnyMo packs</div>
+                            <div class="carrot-status-value" id="carrot-pack-status">Ready</div>
+                            <div class="carrot-status-detail" id="carrot-pack-detail">Click to browse BunnyMo packs</div>
                         </div>
                         <div class="carrot-status-indicator" id="carrot-pack-indicator">
                             <div class="carrot-pulse-dot"></div>
@@ -703,8 +711,15 @@
                  data-tutorial-step="lorebook-management"
                  data-tooltip="Select and configure character repositories from your lorebooks">
                 <div class="carrot-card-header">
-                    <h3>📚 Lorebook Management</h3>
-                    <p class="carrot-card-subtitle">Configure character repositories and tag libraries</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div>
+                            <h3>📚 Lorebook Management</h3>
+                            <p class="carrot-card-subtitle">Configure character repositories and tag libraries</p>
+                        </div>
+                        <button id="carrot-main-lorebook-popout-btn" class="menu_button" title="Open in separate window" style="background: none; border: none; color: var(--SmartThemeBodyColor); font-size: 18px; cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s ease;" onmouseenter="this.style.background='var(--SmartThemeEmColor)'; this.style.color='white';" onmouseleave="this.style.background='none'; this.style.color='var(--SmartThemeBodyColor)';">
+                            <i class="fa-solid fa-window-restore"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="carrot-card-body">
                     <div class="carrot-search-container">
@@ -766,17 +781,8 @@
                         <div class="carrot-tutorial-arrow">→</div>
                     </div>
 
-                    <div class="carrot-tutorial-card" onclick="CarrotKernel.openLoadoutTutorial()">
-                        <div class="carrot-tutorial-number">4</div>
-                        <div class="carrot-tutorial-content">
-                            <strong>Loadout Manager</strong>
-                            <span>Create context-specific settings for characters and chats</span>
-                        </div>
-                        <div class="carrot-tutorial-arrow">→</div>
-                    </div>
-
                     <div class="carrot-tutorial-card" onclick="CarrotKernel.openTemplateEditorTutorial()">
-                        <div class="carrot-tutorial-number">5</div>
+                        <div class="carrot-tutorial-number">4</div>
                         <div class="carrot-tutorial-content">
                             <strong>Template Editor</strong>
                             <span>Customize how character data is formatted for AI</span>
@@ -785,7 +791,7 @@
                     </div>
 
                     <div class="carrot-tutorial-card" onclick="CarrotKernel.openBabyBunnyTutorial()">
-                        <div class="carrot-tutorial-number">6</div>
+                        <div class="carrot-tutorial-number">5</div>
                         <div class="carrot-tutorial-content">
                             <strong>Baby Bunny Mode</strong>
                             <span>Create character archives from AI-generated sheets</span>

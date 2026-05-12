@@ -10,7 +10,10 @@
     "js":  "index.js",
     "css":  "style.css",
     "generate_interceptor":  "carrotKernelRagInterceptor_CK",
-    "author":  "CarrotKernel Team",
+    "author":  "CarrotKernel Team; mobile fork edits by DAYROS-V2",
     "version":  "1.0.0",
-    "description":  "Modern character tag system with flexible display modes - spiritual successor to BunnyMoTags"
+    "description":  "Modern character tag system with flexible display modes - spiritual successor to BunnyMoTags. This fork edits the WorldBook Tracker for mobile display.",
+    "homePage":  "https://github.com/DAYROS-V2/CarrotKernel-Mobile-WorldBook-Tracker-fixed.git",
+    "originalHomePage":  "https://github.com/Coneja-Chibi/CarrotKernel",
+    "editor":  "DAYROS-V2 - mobile WorldBook Tracker fix"
 }

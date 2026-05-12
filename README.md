@@ -1,3 +1,15 @@
+# Fork Notice
+
+This is a DAYROS-V2 fork of the original CarrotKernel extension by Coneja-Chibi.
+
+- Original repository: https://github.com/Coneja-Chibi/CarrotKernel
+- Mobile WorldBook Tracker fork: https://github.com/DAYROS-V2/CarrotKernel-Mobile-WorldBook-Tracker-fixed.git
+- Fork edit's: only the WorldBook Tracker was edited, specifically to make the tracker panel open correctly on mobile.
+
+All original CarrotKernel functionality and credits remain with the original project and its creators.
+
+---
+
 # 🥕 CarrotKernel
 *A spiritual successor to BunnyMoTags - Professional Character Sheet & WorldInfo Management System for SillyTavern*
 

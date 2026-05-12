@@ -1,4 +1,4 @@
-# Fork Notice
+# Fork 
 
 This is a DAYROS-V2 fork of the original CarrotKernel extension by Coneja-Chibi.
 

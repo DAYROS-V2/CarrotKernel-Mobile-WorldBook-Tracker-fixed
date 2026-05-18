@@ -7212,7 +7212,7 @@ function registerEventListeners() {
         CarrotDebug.init('Sheet generator initialized with findCharacterByName');
 
         // Load settings HTML - silent initialization
-        const settingsHtml = await $.get(`scripts/extensions/third-party/${extensionName}/settings.html`);
+        const settingsHtml = await $.get(new URL('settings.html', import.meta.url).href);
         $('#extensions_settings').append(settingsHtml);
 
         // Update lorebook list
